@@ -1,4 +1,4 @@
-package nl.gogognome.messagespropertiessynchronizer;
+package nl.gogognome.messagepropertiessynchronizer;
 
 import java.io.File;
 import java.io.FileInputStream;

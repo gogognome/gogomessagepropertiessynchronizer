@@ -1,9 +1,5 @@
 package nl.gogognome.messagepropertiessynchronizer;
 
-import nl.gogognome.messagespropertiessynchronizer.KeyValueLine;
-import nl.gogognome.messagespropertiessynchronizer.Line;
-import nl.gogognome.messagespropertiessynchronizer.MessageProperties;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;

@@ -1,4 +1,4 @@
-package nl.gogognome.messagespropertiessynchronizer;
+package nl.gogognome.messagepropertiessynchronizer;
 
 public class KeyValueLine implements Line {
 
@@ -22,7 +22,7 @@ public class KeyValueLine implements Line {
     public boolean equals(Line that) {
         if (that instanceof KeyValueLine) {
             KeyValueLine thatKeyValueProperty = (KeyValueLine) that;
-            return this.key.equals(thatKeyValueProperty.key) && this.value.equals(thatKeyValueProperty.value);
+            return this.key.equals(thatKeyValueProperty.key);
         }
         return false;
     }
