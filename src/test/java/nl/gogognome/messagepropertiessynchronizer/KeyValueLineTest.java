@@ -1,18 +1,29 @@
 package nl.gogognome.messagepropertiessynchronizer;
 
 import org.junit.Assert;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 public class KeyValueLineTest {
 
-    public void testEquals() {
-        KeyValueLine firstnameEn = new KeyValueLine("firstname", "Firstname");
-        KeyValueLine firstnameNl = new KeyValueLine("firstname", "Voornaam");
-        KeyValueLine cityEn = new KeyValueLine("city", "City");
+    private KeyValueLine firstnameEn = new KeyValueLine("firstname", "Firstname");
+    private KeyValueLine firstnameNl = new KeyValueLine("firstname", "Voornaam");
+    private KeyValueLine cityEn = new KeyValueLine("city", "City");
 
-        Assert.assertEquals(firstnameEn, firstnameEn);
-        Assert.assertEquals(firstnameEn, firstnameNl);
-        Assert.assertNotEquals(firstnameEn, cityEn);
-        Assert.assertNotEquals(firstnameEn, new NonKeyValueLine(firstnameEn.getKey()));
-        Assert.assertNotEquals(firstnameEn, new NonKeyValueLine(firstnameEn.getValue()));
+    @Test
+    public void testEquals() {
+        assertEquals(firstnameEn, firstnameEn);
+        assertEquals(firstnameEn, firstnameNl);
+        assertNotEquals(firstnameEn, cityEn);
+        assertNotEquals(firstnameEn, new NonKeyValueLine(firstnameEn.getKey()));
+        assertNotEquals(firstnameEn, new NonKeyValueLine(firstnameEn.getValue()));
+    }
+
+    @Test
+    public void testHashCode() {
+        assertEquals(firstnameEn.hashCode(), firstnameNl.hashCode());
+        assertNotEquals(firstnameEn.hashCode(), cityEn.hashCode());
     }
 }

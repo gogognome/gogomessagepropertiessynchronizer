@@ -8,12 +8,22 @@ public class NonKeyValueLine implements Line {
         this.line = line;
     }
 
+    public String getLine() {
+        return line;
+    }
+
     @Override
-    public boolean equals(Line that) {
-        if (that instanceof NonKeyValueLine) {
-            NonKeyValueLine thatNonKeyValueProperty = (NonKeyValueLine) that;
-            return this.line.equals(thatNonKeyValueProperty.line);
+    public boolean equals(Object object) {
+        if (object instanceof NonKeyValueLine) {
+            NonKeyValueLine that = (NonKeyValueLine) object;
+            return this.line.equals(that.line);
         }
         return false;
     }
+
+    @Override
+    public int hashCode() {
+        return line.hashCode();
+    }
+
 }

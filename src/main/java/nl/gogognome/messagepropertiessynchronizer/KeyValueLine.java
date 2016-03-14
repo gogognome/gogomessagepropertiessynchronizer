@@ -19,11 +19,16 @@ public class KeyValueLine implements Line {
     }
 
     @Override
-    public boolean equals(Line that) {
-        if (that instanceof KeyValueLine) {
-            KeyValueLine thatKeyValueProperty = (KeyValueLine) that;
-            return this.key.equals(thatKeyValueProperty.key);
+    public boolean equals(Object object) {
+        if (object instanceof KeyValueLine) {
+            KeyValueLine that = (KeyValueLine) object;
+            return this.key.equals(that.key);
         }
         return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return key.hashCode();
     }
 }
