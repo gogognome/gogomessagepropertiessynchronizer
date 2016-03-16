@@ -15,9 +15,13 @@ public class MessageProperties {
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
         String line = reader.readLine();
         while (line != null) {
-            lines.add(parse(line));
+            addLine(line);
             line = reader.readLine();
         }
+    }
+
+    public void addLine(String line) {
+        lines.add(parse(line));
     }
 
     private Line parse(String line) {
