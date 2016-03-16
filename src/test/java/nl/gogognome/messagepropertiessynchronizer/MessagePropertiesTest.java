@@ -37,4 +37,59 @@ public class MessagePropertiesTest {
         assertEquals("name", ((KeyValueLine) line).getKey());
         assertEquals("Naam", ((KeyValueLine) line).getValue());
     }
+
+    @Test
+    public void parseSingleCommentLine() throws Exception {
+        messageProperties.parse(new ByteArrayInputStream("# No comments please!".getBytes("ISO-8859-1")));
+        assertEquals(1, messageProperties.size());
+
+        Line line = messageProperties.get(0);
+        assertEquals(NonKeyValueLine.class, line.getClass());
+
+        assertEquals("# No comments please!", ((NonKeyValueLine) line).getLine());
+    }
+
+    @Test
+    public void parseSingleCommentLineShouldIgnoreWhitespacesInFront() throws Exception {
+        messageProperties.parse(new ByteArrayInputStream("   # No comments please!".getBytes("ISO-8859-1")));
+        assertEquals(1, messageProperties.size());
+
+        Line line = messageProperties.get(0);
+        assertEquals(NonKeyValueLine.class, line.getClass());
+
+        assertEquals("   # No comments please!", ((NonKeyValueLine) line).getLine());
+    }
+
+    @Test
+    public void parseSingleEmptyLine() throws Exception {
+        messageProperties.parse(new ByteArrayInputStream("\n".getBytes("ISO-8859-1"))); // newline needed, because otherwise zero lines are returned
+        assertEquals(1, messageProperties.size());
+
+        Line line = messageProperties.get(0);
+        assertEquals(NonKeyValueLine.class, line.getClass());
+
+        assertEquals("", ((NonKeyValueLine) line).getLine());
+    }
+
+    @Test
+    public void parseSingleLineWithWhiteSpacesOnly() throws Exception {
+        messageProperties.parse(new ByteArrayInputStream("\t  \t".getBytes("ISO-8859-1")));
+        assertEquals(1, messageProperties.size());
+
+        Line line = messageProperties.get(0);
+        assertEquals(NonKeyValueLine.class, line.getClass());
+
+        assertEquals("\t  \t", ((NonKeyValueLine) line).getLine());
+    }
+
+    @Test
+    public void parseSingleLineWithoutKeyValuePair() throws Exception {
+        messageProperties.parse(new ByteArrayInputStream("This is a test.".getBytes("ISO-8859-1")));
+        assertEquals(1, messageProperties.size());
+
+        Line line = messageProperties.get(0);
+        assertEquals(NonKeyValueLine.class, line.getClass());
+
+        assertEquals("This is a test.", ((NonKeyValueLine) line).getLine());
+    }
 }

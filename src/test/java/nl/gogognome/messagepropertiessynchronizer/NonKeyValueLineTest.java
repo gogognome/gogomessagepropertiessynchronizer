@@ -19,6 +19,7 @@ public class NonKeyValueLineTest {
         assertNotEquals(line1, line2);
         assertNotEquals(line1, line3);
         assertNotEquals(line2, line3);
+        assertNotEquals(line1, new KeyValueLine(line1.getLine(), line1.getLine()));
     }
 
     @Test
