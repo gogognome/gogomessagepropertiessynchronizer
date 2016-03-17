@@ -31,4 +31,9 @@ public class KeyValueLine implements Line {
     public int hashCode() {
         return key.hashCode();
     }
+
+    @Override
+    public String toString() {
+        return key + "=" + value;
+    }
 }

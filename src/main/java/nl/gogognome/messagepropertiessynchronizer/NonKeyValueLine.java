@@ -26,4 +26,8 @@ public class NonKeyValueLine implements Line {
         return line.hashCode();
     }
 
+    @Override
+    public String toString() {
+        return line;
+    }
 }

@@ -11,15 +11,6 @@ public class MessageProperties {
 
     private List<Line> lines = new ArrayList<>();
 
-    public void parse(InputStream inputStream) throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-        String line = reader.readLine();
-        while (line != null) {
-            addLine(line);
-            line = reader.readLine();
-        }
-    }
-
     public void addLine(String line) {
         lines.add(parse(line));
     }

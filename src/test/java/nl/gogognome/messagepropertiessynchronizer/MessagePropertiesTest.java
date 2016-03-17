@@ -11,14 +11,13 @@ public class MessagePropertiesTest {
     private MessageProperties messageProperties = new MessageProperties();
 
     @Test
-    public void parseEmptyInputStream() throws Exception {
-        messageProperties.parse(new ByteArrayInputStream("".getBytes("ISO-8859-1")));
-        assertEquals(0,  messageProperties.size());
+    public void initialMessagePropertiesHasNoLines() throws Exception {
+        assertEquals(0, messageProperties.size());
     }
 
     @Test
-    public void parseSingleKeyValuePair() throws Exception {
-        messageProperties.parse(new ByteArrayInputStream("name=Naam".getBytes("ISO-8859-1")));
+    public void parseKeyValuePair() throws Exception {
+        messageProperties.addLine("name=Naam");
         assertEquals(1, messageProperties.size());
 
         Line line = messageProperties.get(0);
@@ -29,8 +28,8 @@ public class MessagePropertiesTest {
     }
 
     @Test
-    public void parseSingleKeyValuePairShouldTrimKeyAndValue() throws Exception {
-        messageProperties.parse(new ByteArrayInputStream("  name  =  Naam  ".getBytes("ISO-8859-1")));
+    public void parseKeyValuePairShouldTrimKeyAndValue() throws Exception {
+        messageProperties.addLine("  name  =  Naam  ");
 
         Line line = messageProperties.get(0);
 
@@ -39,8 +38,8 @@ public class MessagePropertiesTest {
     }
 
     @Test
-    public void parseSingleCommentLine() throws Exception {
-        messageProperties.parse(new ByteArrayInputStream("# No comments please!".getBytes("ISO-8859-1")));
+    public void parseCommentLine() throws Exception {
+        messageProperties.addLine("# No comments please!");
         assertEquals(1, messageProperties.size());
 
         Line line = messageProperties.get(0);
@@ -50,8 +49,8 @@ public class MessagePropertiesTest {
     }
 
     @Test
-    public void parseSingleCommentLineShouldIgnoreWhitespacesInFront() throws Exception {
-        messageProperties.parse(new ByteArrayInputStream("   # No comments please!".getBytes("ISO-8859-1")));
+    public void parseCommentLineShouldIgnoreWhitespacesInFront() throws Exception {
+        messageProperties.addLine("   # No comments please!");
         assertEquals(1, messageProperties.size());
 
         Line line = messageProperties.get(0);
@@ -61,8 +60,8 @@ public class MessagePropertiesTest {
     }
 
     @Test
-    public void parseSingleEmptyLine() throws Exception {
-        messageProperties.parse(new ByteArrayInputStream("\n".getBytes("ISO-8859-1"))); // newline needed, because otherwise zero lines are returned
+    public void parseEmptyLine() throws Exception {
+        messageProperties.addLine("");
         assertEquals(1, messageProperties.size());
 
         Line line = messageProperties.get(0);
@@ -72,8 +71,8 @@ public class MessagePropertiesTest {
     }
 
     @Test
-    public void parseSingleLineWithWhiteSpacesOnly() throws Exception {
-        messageProperties.parse(new ByteArrayInputStream("\t  \t".getBytes("ISO-8859-1")));
+    public void parseLineWithWhiteSpacesOnly() throws Exception {
+        messageProperties.addLine("\t  \t");
         assertEquals(1, messageProperties.size());
 
         Line line = messageProperties.get(0);
@@ -83,13 +82,25 @@ public class MessagePropertiesTest {
     }
 
     @Test
-    public void parseSingleLineWithoutKeyValuePair() throws Exception {
-        messageProperties.parse(new ByteArrayInputStream("This is a test.".getBytes("ISO-8859-1")));
+    public void parseLineWithoutKeyValuePair() throws Exception {
+        messageProperties.addLine("This is a test.");
         assertEquals(1, messageProperties.size());
 
         Line line = messageProperties.get(0);
         assertEquals(NonKeyValueLine.class, line.getClass());
 
         assertEquals("This is a test.", ((NonKeyValueLine) line).getLine());
+    }
+
+    @Test
+    public void parseMultipleLinesShouldStoreLinesInOrder() throws Exception {
+        messageProperties.addLine("This is a test.");
+        messageProperties.addLine("bla=Bla");
+        messageProperties.addLine("# No comments please!");
+
+        assertEquals(3, messageProperties.size());
+        assertEquals("This is a test.", messageProperties.get(0).toString());
+        assertEquals("bla=Bla", messageProperties.get(1).toString());
+        assertEquals("# No comments please!", messageProperties.get(2).toString());
     }
 }

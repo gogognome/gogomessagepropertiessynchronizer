@@ -1,20 +1,16 @@
 package nl.gogognome.messagepropertiessynchronizer;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
+import java.nio.file.Files;
 
 public class TwoFileSynchronizer {
 
     public void synchronize(File source, File destination) throws IOException {
         MessageProperties sourceProperties = new MessageProperties();
+        Files.lines(source.toPath()).forEach(sourceProperties::addLine);
         MessageProperties destinationProperties = new MessageProperties();
-        try (InputStream sourceInputStream = new FileInputStream(source);
-             InputStream destinationInputStream = new FileInputStream(destination)) {
-            sourceProperties.parse(sourceInputStream);
-            destinationProperties.parse(destinationInputStream);
-        }
+        Files.lines(destination.toPath()).forEach(destinationProperties::addLine);
 
         determineLcs(sourceProperties, destinationProperties);
     }
