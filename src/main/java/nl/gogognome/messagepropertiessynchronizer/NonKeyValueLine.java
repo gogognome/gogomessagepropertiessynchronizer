@@ -8,8 +8,14 @@ public class NonKeyValueLine implements Line {
         this.line = line;
     }
 
-    public String getLine() {
+    @Override
+    public String getOriginalLine() {
         return line;
+    }
+
+    @Override
+    public Line addTodoMessage() {
+        return this;
     }
 
     @Override

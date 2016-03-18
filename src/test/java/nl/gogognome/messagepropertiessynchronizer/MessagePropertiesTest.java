@@ -2,8 +2,6 @@ package nl.gogognome.messagepropertiessynchronizer;
 
 import org.junit.Test;
 
-import java.io.ByteArrayInputStream;
-
 import static org.junit.Assert.assertEquals;
 
 public class MessagePropertiesTest {
@@ -23,18 +21,7 @@ public class MessagePropertiesTest {
         Line line = messageProperties.get(0);
         assertEquals(KeyValueLine.class, line.getClass());
 
-        assertEquals("name", ((KeyValueLine) line).getKey());
-        assertEquals("Naam", ((KeyValueLine) line).getValue());
-    }
-
-    @Test
-    public void parseKeyValuePairShouldTrimKeyAndValue() throws Exception {
-        messageProperties.addLine("  name  =  Naam  ");
-
-        Line line = messageProperties.get(0);
-
-        assertEquals("name", ((KeyValueLine) line).getKey());
-        assertEquals("Naam", ((KeyValueLine) line).getValue());
+        assertEquals("name=Naam", line.toString());
     }
 
     @Test
@@ -45,7 +32,7 @@ public class MessagePropertiesTest {
         Line line = messageProperties.get(0);
         assertEquals(NonKeyValueLine.class, line.getClass());
 
-        assertEquals("# No comments please!", ((NonKeyValueLine) line).getLine());
+        assertEquals("# No comments please!", ((NonKeyValueLine) line).getOriginalLine());
     }
 
     @Test
@@ -56,7 +43,7 @@ public class MessagePropertiesTest {
         Line line = messageProperties.get(0);
         assertEquals(NonKeyValueLine.class, line.getClass());
 
-        assertEquals("   # No comments please!", ((NonKeyValueLine) line).getLine());
+        assertEquals("   # No comments please!", ((NonKeyValueLine) line).getOriginalLine());
     }
 
     @Test
@@ -67,7 +54,7 @@ public class MessagePropertiesTest {
         Line line = messageProperties.get(0);
         assertEquals(NonKeyValueLine.class, line.getClass());
 
-        assertEquals("", ((NonKeyValueLine) line).getLine());
+        assertEquals("", ((NonKeyValueLine) line).getOriginalLine());
     }
 
     @Test
@@ -78,7 +65,7 @@ public class MessagePropertiesTest {
         Line line = messageProperties.get(0);
         assertEquals(NonKeyValueLine.class, line.getClass());
 
-        assertEquals("\t  \t", ((NonKeyValueLine) line).getLine());
+        assertEquals("\t  \t", ((NonKeyValueLine) line).getOriginalLine());
     }
 
     @Test
@@ -89,7 +76,7 @@ public class MessagePropertiesTest {
         Line line = messageProperties.get(0);
         assertEquals(NonKeyValueLine.class, line.getClass());
 
-        assertEquals("This is a test.", ((NonKeyValueLine) line).getLine());
+        assertEquals("This is a test.", ((NonKeyValueLine) line).getOriginalLine());
     }
 
     @Test
@@ -102,5 +89,17 @@ public class MessagePropertiesTest {
         assertEquals("This is a test.", messageProperties.get(0).toString());
         assertEquals("bla=Bla", messageProperties.get(1).toString());
         assertEquals("# No comments please!", messageProperties.get(2).toString());
+    }
+
+    @Test
+    public void testAddingLines() {
+        messageProperties.addLine("A");
+        messageProperties.addLine("B");
+        messageProperties.addLineInFront(new NonKeyValueLine("C"));
+        messageProperties.addLineInFront(new NonKeyValueLine("D"));
+        messageProperties.addLine("E");
+
+        assertEquals(5, messageProperties.size());
+        assertEquals("D, C, A, B, E", messageProperties.toString());
     }
 }

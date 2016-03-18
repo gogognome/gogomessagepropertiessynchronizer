@@ -12,6 +12,20 @@ public class NonKeyValueLineTest {
     private NonKeyValueLine line3 = new NonKeyValueLine("");
 
     @Test
+    public void testGetOriginalLine() {
+        assertEquals("# comment line", line1.getOriginalLine());
+        assertEquals("   ", line2.getOriginalLine());
+        assertEquals("", line3.getOriginalLine());
+    }
+
+    @Test
+    public void testAddTodoMessage() {
+        assertEquals("# comment line", line1.addTodoMessage().getOriginalLine());
+        assertEquals("   ", line2.addTodoMessage().getOriginalLine());
+        assertEquals("", line3.addTodoMessage().getOriginalLine());
+    }
+
+    @Test
     public void testEquals() {
         assertEquals(line1, line1);
         assertEquals(line2, line2);
@@ -19,12 +33,12 @@ public class NonKeyValueLineTest {
         assertNotEquals(line1, line2);
         assertNotEquals(line1, line3);
         assertNotEquals(line2, line3);
-        assertNotEquals(line1, new KeyValueLine(line1.getLine(), line1.getLine()));
+        assertNotEquals(line1, new KeyValueLine(line1.getOriginalLine() + "=" + line1.getOriginalLine()));
     }
 
     @Test
     public void testHashCode() {
-        assertEquals(line1.hashCode(), new NonKeyValueLine(line1.getLine()).hashCode());
+        assertEquals(line1.hashCode(), new NonKeyValueLine(line1.getOriginalLine()).hashCode());
         assertNotEquals(line1.hashCode(), line2.hashCode());
         assertNotEquals(line1.hashCode(), line3.hashCode());
         assertNotEquals(line2.hashCode(), line3.hashCode());

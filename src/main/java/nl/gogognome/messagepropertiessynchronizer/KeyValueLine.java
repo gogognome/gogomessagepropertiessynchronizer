@@ -2,20 +2,28 @@ package nl.gogognome.messagepropertiessynchronizer;
 
 public class KeyValueLine implements Line {
 
+    private final String line;
     private final String key;
-    private final String value;
+    private final int todoInsertionIndex;
 
-    public KeyValueLine(String key, String value) {
-        this.key = key;
-        this.value = value;
+    public KeyValueLine(String line) {
+        this.line = line;
+        int separatorIndex = line.indexOf('=');
+        if (separatorIndex == -1) {
+            throw new IllegalArgumentException("Line does not contain a '='. A KeyValueLine must contain a  '='");
+        }
+        key = line.substring(0, separatorIndex).trim();
+        todoInsertionIndex = line.lastIndexOf(line.substring(separatorIndex+1).trim());
     }
 
-    public String getKey() {
-        return key;
+    @Override
+    public String getOriginalLine() {
+        return line;
     }
 
-    public String getValue() {
-        return value;
+    @Override
+    public Line addTodoMessage() {
+        return new KeyValueLine(line.substring(0, todoInsertionIndex) + "<TODO TRANSLATE>" + line.substring(todoInsertionIndex));
     }
 
     @Override
@@ -34,6 +42,6 @@ public class KeyValueLine implements Line {
 
     @Override
     public String toString() {
-        return key + "=" + value;
+        return line;
     }
 }

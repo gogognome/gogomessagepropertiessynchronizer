@@ -6,16 +6,16 @@ import java.util.Arrays;
 
 import static org.junit.Assert.*;
 
-public class TwoFileSynchronizerTest {
+public class FileSynchronizerTest {
 
-    private TwoFileSynchronizer twoFileSynchronizer = new TwoFileSynchronizer();
+    private FileSynchronizer fileSynchronizer = new FileSynchronizer();
 
     @Test
     public void testDetermineLcsWithEmptyProperties() throws Exception {
         MessageProperties properties1 = new MessageProperties();
         MessageProperties properties2 = new MessageProperties();
 
-        int[][] lcs = twoFileSynchronizer.determineLcs(properties1, properties2);
+        int[][] lcs = fileSynchronizer.determineLcs(properties1, properties2);
         assertEquals("[0]", formatLcs(lcs));
     }
 
@@ -31,7 +31,7 @@ public class TwoFileSynchronizerTest {
         properties2.addLine("A");
         properties2.addLine("D");
 
-        int[][] lcs = twoFileSynchronizer.determineLcs(properties1, properties2);
+        int[][] lcs = fileSynchronizer.determineLcs(properties1, properties2);
         assertEquals(
                 "[0, 0, 0, 0], " +
                 "[0, 0, 1, 1], " +
@@ -49,5 +49,26 @@ public class TwoFileSynchronizerTest {
             sb.append(Arrays.toString(row));
         }
         return sb.toString();
+    }
+
+    @Test
+    public void buildResultingMessageProperties() {
+        MessageProperties properties1 = new MessageProperties();
+        properties1.addLine("A=Message A");
+        properties1.addLine("B=Message B");
+        properties1.addLine("# Comment 1");
+        properties1.addLine("D=Message D");
+        properties1.addLine("E = Message E");
+
+        MessageProperties properties2 = new MessageProperties();
+        properties2.addLine("B=Bericht B");
+        properties2.addLine("# Comment 1");
+        properties2.addLine("D = Bericht D");
+        properties2.addLine("F= Bericht F");
+
+        int[][] lcs = fileSynchronizer.determineLcs(properties1, properties2);
+        MessageProperties result = fileSynchronizer.buildResultingMessageProperties(lcs, properties1, properties2);
+
+        assertEquals("A=<TODO TRANSLATE>Message A, B=Bericht B, # Comment 1, D = Bericht D, E = <TODO TRANSLATE>Message E", result.toString());
     }
 }
