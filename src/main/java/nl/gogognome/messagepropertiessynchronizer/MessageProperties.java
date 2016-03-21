@@ -1,12 +1,9 @@
 package nl.gogognome.messagepropertiessynchronizer;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class MessageProperties {
 
@@ -22,7 +19,7 @@ public class MessageProperties {
 
     private Line parse(String line) {
         if (line.trim().startsWith("#")) {
-            return new NonKeyValueLine(line);
+            return new CommentLine(line);
         }
         int separatorIndex = line.indexOf('=');
         if (separatorIndex != -1) {
@@ -42,6 +39,10 @@ public class MessageProperties {
     @Override
     public String toString() {
         return lines.stream().map(line -> line.getOriginalLine()).collect(Collectors.joining(", "));
+    }
+
+    public Stream<Line> getLinesStream() {
+        return lines.stream();
     }
 }
 

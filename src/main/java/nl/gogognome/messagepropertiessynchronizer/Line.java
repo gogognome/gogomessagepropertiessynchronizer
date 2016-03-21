@@ -3,5 +3,5 @@ package nl.gogognome.messagepropertiessynchronizer;
 public interface Line {
 
     String getOriginalLine();
-    Line addTodoMessage();
+    Line addTodoMessage(String todoMessage);
 }

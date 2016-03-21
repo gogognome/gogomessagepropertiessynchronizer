@@ -30,9 +30,9 @@ public class MessagePropertiesTest {
         assertEquals(1, messageProperties.size());
 
         Line line = messageProperties.get(0);
-        assertEquals(NonKeyValueLine.class, line.getClass());
+        assertEquals(CommentLine.class, line.getClass());
 
-        assertEquals("# No comments please!", ((NonKeyValueLine) line).getOriginalLine());
+        assertEquals("# No comments please!", line.getOriginalLine());
     }
 
     @Test
@@ -41,9 +41,9 @@ public class MessagePropertiesTest {
         assertEquals(1, messageProperties.size());
 
         Line line = messageProperties.get(0);
-        assertEquals(NonKeyValueLine.class, line.getClass());
+        assertEquals(CommentLine.class, line.getClass());
 
-        assertEquals("   # No comments please!", ((NonKeyValueLine) line).getOriginalLine());
+        assertEquals("   # No comments please!", line.getOriginalLine());
     }
 
     @Test
@@ -54,7 +54,7 @@ public class MessagePropertiesTest {
         Line line = messageProperties.get(0);
         assertEquals(NonKeyValueLine.class, line.getClass());
 
-        assertEquals("", ((NonKeyValueLine) line).getOriginalLine());
+        assertEquals("", line.getOriginalLine());
     }
 
     @Test
@@ -65,7 +65,7 @@ public class MessagePropertiesTest {
         Line line = messageProperties.get(0);
         assertEquals(NonKeyValueLine.class, line.getClass());
 
-        assertEquals("\t  \t", ((NonKeyValueLine) line).getOriginalLine());
+        assertEquals("\t  \t", line.getOriginalLine());
     }
 
     @Test
@@ -76,7 +76,7 @@ public class MessagePropertiesTest {
         Line line = messageProperties.get(0);
         assertEquals(NonKeyValueLine.class, line.getClass());
 
-        assertEquals("This is a test.", ((NonKeyValueLine) line).getOriginalLine());
+        assertEquals("This is a test.", line.getOriginalLine());
     }
 
     @Test

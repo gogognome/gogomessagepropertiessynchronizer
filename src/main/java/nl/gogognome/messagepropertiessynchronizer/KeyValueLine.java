@@ -22,8 +22,8 @@ public class KeyValueLine implements Line {
     }
 
     @Override
-    public Line addTodoMessage() {
-        return new KeyValueLine(line.substring(0, todoInsertionIndex) + "<TODO TRANSLATE>" + line.substring(todoInsertionIndex));
+    public Line addTodoMessage(String todoMessage) {
+        return new KeyValueLine(line.substring(0, todoInsertionIndex) + todoMessage + line.substring(todoInsertionIndex));
     }
 
     @Override

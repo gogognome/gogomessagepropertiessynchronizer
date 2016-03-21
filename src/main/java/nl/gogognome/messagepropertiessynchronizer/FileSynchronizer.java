@@ -4,15 +4,29 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 
+import static java.util.stream.Collectors.toList;
+
 public class FileSynchronizer {
+
+    private String todoMessage;
+
+    public FileSynchronizer(String todoMessage) {
+        this.todoMessage = todoMessage;
+    }
 
     public void synchronize(File source, File destination) throws IOException {
         MessageProperties sourceProperties = new MessageProperties();
         Files.lines(source.toPath()).forEach(sourceProperties::addLine);
         MessageProperties destinationProperties = new MessageProperties();
-        Files.lines(destination.toPath()).forEach(destinationProperties::addLine);
 
-        determineLcs(sourceProperties, destinationProperties);
+        if (destination.exists()) {
+            Files.lines(destination.toPath()).forEach(destinationProperties::addLine);
+        }
+
+        int[][] lcs = determineLcs(sourceProperties, destinationProperties);
+        MessageProperties resultProperties = buildResultingMessageProperties(lcs, sourceProperties, destinationProperties);
+
+        Files.write(destination.toPath(), resultProperties.getLinesStream().map(Line::getOriginalLine).collect(toList()));
     }
 
     protected int[][] determineLcs(MessageProperties sourceProperties, MessageProperties destinationProperties) {
@@ -40,7 +54,7 @@ public class FileSynchronizer {
                 result.addLineInFront(destinationProperties.get(row));
             } else if (col > 0 && lcs[col-1][row] == lcs[col][row]) { // line was added
                 col--;
-                result.addLineInFront(sourceProperties.get(col).addTodoMessage());
+                result.addLineInFront(sourceProperties.get(col).addTodoMessage(todoMessage));
             } else { // line was deleted
                 row--;
             }

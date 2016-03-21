@@ -2,13 +2,80 @@ package nl.gogognome.messagepropertiessynchronizer;
 
 import org.junit.Test;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class FileSynchronizerTest {
 
-    private FileSynchronizer fileSynchronizer = new FileSynchronizer();
+    private FileSynchronizer fileSynchronizer = new FileSynchronizer("<TODO TRANSLATE>");
+
+    @Test(expected = IOException.class)
+    public void testSynchronize_sourceDoesNotExist_destinationDoesNotExist() throws Exception {
+        File source = createFile(null);
+        File destination = createFile(null);
+
+        try {
+            fileSynchronizer.synchronize(source, destination);
+
+            Files.readAllLines(destination.toPath());
+        } finally {
+            source.delete();
+            destination.delete();
+        }
+    }
+
+    @Test
+    public void testSynchronize_sourceExists_destinationDoesNotExist() throws Exception {
+        List<String> sourceLines = Arrays.asList("a=A", "b=B");
+        File source = createFile(sourceLines);
+        File destination = createFile(null);
+
+        try {
+            fileSynchronizer.synchronize(source, destination);
+
+            List<String> resultLines = Files.readAllLines(destination.toPath());
+
+            assertEquals(Arrays.asList("a=<TODO TRANSLATE>A", "b=<TODO TRANSLATE>B"), resultLines);
+        } finally {
+            source.delete();
+            destination.delete();
+        }
+    }
+
+    @Test
+    public void testSynchronize_sourceExists_destinationExists() throws Exception {
+        List<String> sourceLines = Arrays.asList("a=A", "b=B");
+        File source = createFile(sourceLines);
+        List<String> destinationLines = Arrays.asList("a=A", "c=C");
+        File destination = createFile(destinationLines);
+
+        try {
+            fileSynchronizer.synchronize(source, destination);
+
+            List<String> resultLines = Files.readAllLines(destination.toPath());
+
+            assertEquals(Arrays.asList("a=A", "b=<TODO TRANSLATE>B"), resultLines);
+        } finally {
+            source.delete();
+            destination.delete();
+        }
+    }
+
+    private File createFile(List<String> lines) throws IOException {
+        File file = File.createTempFile("test-" + UUID.randomUUID(), ".properties");
+        if (lines != null) {
+            Files.write(file.toPath(), lines);
+        } else {
+            file.delete();
+        }
+        return file;
+    }
 
     @Test
     public void testDetermineLcsWithEmptyProperties() throws Exception {

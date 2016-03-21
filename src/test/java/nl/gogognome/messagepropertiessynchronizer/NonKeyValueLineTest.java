@@ -20,9 +20,9 @@ public class NonKeyValueLineTest {
 
     @Test
     public void testAddTodoMessage() {
-        assertEquals("# comment line", line1.addTodoMessage().getOriginalLine());
-        assertEquals("   ", line2.addTodoMessage().getOriginalLine());
-        assertEquals("", line3.addTodoMessage().getOriginalLine());
+        assertEquals("# comment line", line1.addTodoMessage("<TODO TRANSLATE>").getOriginalLine());
+        assertEquals("   ", line2.addTodoMessage("<TODO TRANSLATE>").getOriginalLine());
+        assertEquals("", line3.addTodoMessage("<TODO TRANSLATE>").getOriginalLine());
     }
 
     @Test
@@ -34,6 +34,7 @@ public class NonKeyValueLineTest {
         assertNotEquals(line1, line3);
         assertNotEquals(line2, line3);
         assertNotEquals(line1, new KeyValueLine(line1.getOriginalLine() + "=" + line1.getOriginalLine()));
+        assertNotEquals(line1, new CommentLine(line1.getOriginalLine()));
     }
 
     @Test
@@ -42,5 +43,10 @@ public class NonKeyValueLineTest {
         assertNotEquals(line1.hashCode(), line2.hashCode());
         assertNotEquals(line1.hashCode(), line3.hashCode());
         assertNotEquals(line2.hashCode(), line3.hashCode());
+    }
+
+    @Test
+    public void testToString() {
+        assertEquals("# comment line", line1.toString());
     }
 }

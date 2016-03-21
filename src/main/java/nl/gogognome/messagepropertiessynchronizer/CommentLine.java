@@ -1,10 +1,10 @@
 package nl.gogognome.messagepropertiessynchronizer;
 
-public class NonKeyValueLine implements Line {
+public class CommentLine implements Line{
 
     private final String line;
 
-    public NonKeyValueLine(String line) {
+    public CommentLine(String line) {
         this.line = line;
     }
 
@@ -20,20 +20,17 @@ public class NonKeyValueLine implements Line {
 
     @Override
     public boolean equals(Object object) {
-        if (object instanceof NonKeyValueLine) {
-            NonKeyValueLine that = (NonKeyValueLine) object;
-            return this.line.equals(that.line);
-        }
-        return false;
+        return object instanceof CommentLine;
     }
 
     @Override
     public int hashCode() {
-        return line.hashCode();
+        return 83;
     }
 
     @Override
     public String toString() {
         return line;
     }
+
 }

@@ -26,8 +26,8 @@ public class KeyValueLineTest {
 
     @Test
     public void testAddTodoMessage() {
-        assertEquals("firstname=<TODO TRANSLATE>Firstname", firstnameEn.addTodoMessage().getOriginalLine());
-        assertEquals("  firstname  =  <TODO TRANSLATE>Firstname  ", firstnameEnWithSpaces.addTodoMessage().getOriginalLine());
+        assertEquals("firstname=<TODO TRANSLATE>Firstname", firstnameEn.addTodoMessage("<TODO TRANSLATE>").getOriginalLine());
+        assertEquals("  firstname  =  <TODO TRANSLATE>Firstname  ", firstnameEnWithSpaces.addTodoMessage("<TODO TRANSLATE>").getOriginalLine());
     }
 
     @Test
@@ -45,4 +45,11 @@ public class KeyValueLineTest {
         assertEquals(firstnameEn.hashCode(), firstnameNl.hashCode());
         assertNotEquals(firstnameEn.hashCode(), cityEn.hashCode());
     }
+
+    @Test
+    public void testToString() {
+        assertEquals("firstname=Firstname", firstnameEn.toString());
+        assertEquals("  firstname  =  Firstname  ", firstnameEnWithSpaces.toString());
+    }
+
 }
