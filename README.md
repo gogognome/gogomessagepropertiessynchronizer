@@ -55,6 +55,7 @@ line=Lijn
 circle=Cirkel
 
 # Groep 2
+yellow = Geel
 green = Groen
 blue = Blauw
 ```
