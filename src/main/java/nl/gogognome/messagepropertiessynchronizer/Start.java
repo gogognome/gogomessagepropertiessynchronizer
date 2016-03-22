@@ -44,6 +44,6 @@ public class Start {
     }
 
     private static void printHelpMessage(Options options) {
-        new HelpFormatter().printHelp( "java -jar messagepropertiessynchronizer.jar", options, true);
+        new HelpFormatter().printHelp( "java -jar gogomessagepropertiessynchronizer-1.0.jar", options, true);
     }
 }
