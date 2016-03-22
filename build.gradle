@@ -1,8 +1,28 @@
 group 'nl.gogognome'
-version '1.0-SNAPSHOT'
+version '1.0'
+
+buildscript {
+    repositories { jcenter() }
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.3'
+    }
+}
 
 apply plugin: 'java'
 apply plugin: 'maven'
+apply plugin: 'application'
+apply plugin: 'com.github.johnrengelman.shadow'
+
+jar {
+    from {
+        (configurations.runtime).collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
+    manifest {
+        attributes 'Main-Class': 'nl.gogognome.messagepropertiessynchronizer.Start'
+    }
+}
 
 compileJava {
     sourceCompatibility = 1.8
