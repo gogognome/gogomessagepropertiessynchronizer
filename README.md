@@ -16,8 +16,8 @@ identify lines to be translated. Comments can be translated as long as the numbe
 
 # Build instructions
 
-After cloning this project type `gradlew install` from the command prompt in the directory containing the file
-build.gradle. After a couple of seconds build/libs/gogomessagepropertiessynchronizer-1.0.jar is created.
+After cloning this project type `mvn install` from the command prompt in the directory containing the file
+`pom.xml`. After a couple of seconds `/target/messagepropertiessynchronizer-1.0.0.jar` is created.
 
 # Usage
 
