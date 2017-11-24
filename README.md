@@ -2,6 +2,8 @@
 
 A tool for synchronizing message.message properties files.
 
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/nl.gogognome/messagepropertiessynchronizer/badge.svg?style=plastic)](https://maven-badges.herokuapp.com/maven-central/nl.gogognome/messagepropertiessynchronizer)
+
 # Introduction
 
 When working with multiple developers on a software product that supports multiple languages,
