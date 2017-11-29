@@ -1,9 +1,7 @@
 package nl.gogognome.messagepropertiessynchronizer;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.*;
+import java.util.stream.*;
 
 public class MessageProperties {
 
@@ -43,6 +41,15 @@ public class MessageProperties {
 
     public Stream<Line> getLinesStream() {
         return lines.stream();
+    }
+
+    public Line getLineWithKey(String key) {
+        return lines.stream()
+                .filter(line -> line instanceof KeyValueLine)
+                .map(line -> (KeyValueLine) line)
+                .filter(keyValueLine -> keyValueLine.getKey().equals(key))
+                .findFirst()
+                .orElse(null);
     }
 }
 

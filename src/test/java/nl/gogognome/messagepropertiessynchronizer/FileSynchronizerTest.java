@@ -1,15 +1,10 @@
 package nl.gogognome.messagepropertiessynchronizer;
 
-import org.junit.Test;
-
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
-
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
+import java.io.*;
+import java.nio.file.*;
+import java.util.*;
+import org.junit.*;
 
 public class FileSynchronizerTest {
 
@@ -20,14 +15,9 @@ public class FileSynchronizerTest {
         File source = createFile(null);
         File destination = createFile(null);
 
-        try {
-            fileSynchronizer.synchronize(source, destination);
+        fileSynchronizer.synchronize(source, destination);
 
-            Files.readAllLines(destination.toPath());
-        } finally {
-            source.delete();
-            destination.delete();
-        }
+        Files.readAllLines(destination.toPath());
     }
 
     @Test
@@ -43,8 +33,8 @@ public class FileSynchronizerTest {
 
             assertEquals(Arrays.asList("a=<TODO TRANSLATE>A", "b=<TODO TRANSLATE>B"), resultLines);
         } finally {
-            source.delete();
-            destination.delete();
+            assertTrue(source.delete());
+            assertTrue(destination.delete());
         }
     }
 
@@ -62,8 +52,27 @@ public class FileSynchronizerTest {
 
             assertEquals(Arrays.asList("a=A", "b=<TODO TRANSLATE>B"), resultLines);
         } finally {
-            source.delete();
-            destination.delete();
+            assertTrue(source.delete());
+            assertTrue(destination.delete());
+        }
+    }
+
+    @Test
+    public void testSynchronize_moveLineInSource_lineIsMovedInDestinationToo() throws Exception {
+        List<String> sourceLines = Arrays.asList("a=A", "b=B", "c=C");
+        File source = createFile(sourceLines);
+        List<String> destinationLines = Arrays.asList("c=C", "b=B", "a=A");
+        File destination = createFile(destinationLines);
+
+        try {
+            fileSynchronizer.synchronize(source, destination);
+
+            List<String> resultLines = Files.readAllLines(destination.toPath());
+
+            assertEquals(Arrays.asList("a=A", "b=B", "c=C"), resultLines);
+        } finally {
+            assertTrue(source.delete());
+            assertTrue(destination.delete());
         }
     }
 
@@ -72,7 +81,7 @@ public class FileSynchronizerTest {
         if (lines != null) {
             Files.write(file.toPath(), lines);
         } else {
-            file.delete();
+            assertTrue(file.delete());
         }
         return file;
     }

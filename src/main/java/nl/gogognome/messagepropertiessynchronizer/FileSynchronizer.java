@@ -1,10 +1,8 @@
 package nl.gogognome.messagepropertiessynchronizer;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-
-import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.*;
+import java.io.*;
+import java.nio.file.*;
 
 public class FileSynchronizer {
 
@@ -54,7 +52,12 @@ public class FileSynchronizer {
                 result.addLineInFront(destinationProperties.get(row));
             } else if (col > 0 && lcs[col-1][row] == lcs[col][row]) { // line was added
                 col--;
-                result.addLineInFront(sourceProperties.get(col).addTodoMessage(todoMessage));
+                Line oldLine = destinationProperties.getLineWithKey(((KeyValueLine) sourceProperties.get(col)).getKey());
+                if (oldLine != null) {
+                    result.addLineInFront(oldLine);
+                } else {
+                    result.addLineInFront(sourceProperties.get(col).addTodoMessage(todoMessage));
+                }
             } else { // line was deleted
                 row--;
             }

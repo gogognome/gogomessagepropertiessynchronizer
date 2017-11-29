@@ -16,6 +16,10 @@ public class KeyValueLine implements Line {
         todoInsertionIndex = line.lastIndexOf(line.substring(separatorIndex+1).trim());
     }
 
+    public String getKey() {
+        return key;
+    }
+
     @Override
     public String getOriginalLine() {
         return line;
