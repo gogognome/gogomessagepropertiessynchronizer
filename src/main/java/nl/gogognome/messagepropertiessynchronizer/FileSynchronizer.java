@@ -52,7 +52,7 @@ public class FileSynchronizer {
                 result.addLineInFront(destinationProperties.get(row));
             } else if (col > 0 && lcs[col-1][row] == lcs[col][row]) { // line was added
                 col--;
-                Line oldLine = destinationProperties.getLineWithKey(((KeyValueLine) sourceProperties.get(col)).getKey());
+                Line oldLine = getOldLine(sourceProperties, destinationProperties, col);
                 if (oldLine != null) {
                     result.addLineInFront(oldLine);
                 } else {
@@ -63,5 +63,14 @@ public class FileSynchronizer {
             }
         }
         return result;
+    }
+
+    private Line getOldLine(MessageProperties sourceProperties, MessageProperties destinationProperties, int col) {
+        Line newLine = sourceProperties.get(col);
+        if (newLine instanceof KeyValueLine) {
+            return destinationProperties.getLineWithKey(((KeyValueLine) newLine).getKey());
+        } else {
+            return null;
+        }
     }
 }
